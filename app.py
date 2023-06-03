@@ -32,3 +32,6 @@ def index():
 @app.route('/single/<id>', methods=['GET'])
 def single(id):
     return render_template('single.html', single=singles[int(id)], id=id)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0',port=5000)
