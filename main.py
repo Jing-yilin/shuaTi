@@ -1,12 +1,12 @@
-'''
+"""
 项目名称：基于Python的毛概网页刷题
 项目功能：显示题干、选项，在答题者输入答案后，给出正确选项，并记录当前错题编号,并将错题编号写入错题集 data/错题集.csv
-'''
+"""
 
 import pandas as pd
-import numpy as np
-import flask
-import os
+# import numpy as np
+# import flask
+# import os
 
 # 读取 ./data/单选题合并.csv
 df = pd.read_csv('./data/单选题合并.csv', encoding='utf-8', index_col=0)
@@ -38,38 +38,3 @@ for i in range(len(df)):
     print("="*40, '\n') # 分割线
 
 # 现在我需要一个网页页面来显示题干和选项，然后输入答案，再显示正确答案，最后记录错题编号
-# 用flask框架来实现
-# 用flask框架来实现
-app = flask.Flask(__name__)
-# 设置网页标题
-app.config['TITLE'] = '毛概刷题'
-# 设置网页图标
-app.config['FAVICON'] = 'https://www.maozhanggui.cc/favicon.ico'
-# 设置网页背景颜色
-app.config['BACKGROUND_COLOR'] = '#f8f9fa'
-# 设置网页字体颜色
-app.config['FONT_COLOR'] = '#212529'
-# 设置网页字体
-app.config['FONT_FAMILY'] = 'Microsoft YaHei'
-# 设置网页字体大小
-app.config['FONT_SIZE'] = '16px'
-# 设置网页题干字体大小
-app.config['TITLE_FONT_SIZE'] = '20px'
-# 设置网页选项字体大小
-app.config['OPTION_FONT_SIZE'] = '16px'
-# 设置网页答案字体大小
-app.config['ANSWER_FONT_SIZE'] = '16px'
-# 设置网页题干字体颜色
-app.config['TITLE_FONT_COLOR'] = '#212529'
-# 设置网页选项字体颜色
-app.config['OPTION_FONT_COLOR'] = '#212529'
-# 设置网页答案字体颜色
-app.config['ANSWER_FONT_COLOR'] = '#212529'
-# 设置网页题干字体
-app.config['TITLE_FONT_FAMILY'] = 'Microsoft YaHei'
-# 设置网页选项字体
-app.config['OPTION_FONT_FAMILY'] = 'Microsoft YaHei'
-# 设置网页答案字体
-app.config['ANSWER_FONT_FAMILY'] = 'Microsoft YaHei'
-# 设置网页题干字体粗细
-app.config['TITLE_FONT_WEIGHT'] = 'bold'
