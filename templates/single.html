@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>毛概刷题~给濛濛</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .option {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            background-color: #fff;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background-color: #eee;
+        }
+
+        .correct {
+            background-color: #5cb85c;
+            color: #fff;
+        }
+
+        .wrong {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function checkAnswer(selectedOption) {
+            const answer = document.getElementById("answer");
+            const correctAnswer = answer.getAttribute("data-answer");
+
+            const options = document.getElementsByClassName("option");
+
+            for (let i = 0; i < options.length; i++) {
+                options[i].removeEventListener("click", optionClickHandler);
+                if (options[i].id == correctAnswer) {
+                    options[i].classList.add("correct");
+                }
+                if (options[i].id != correctAnswer && options[i].innerText == selectedOption) {
+                    options[i].classList.add("wrong");
+                }
+            }
+        }
+
+        function optionClickHandler(event) {
+            const selectedOption = event.target.innerText;
+            checkAnswer(selectedOption);
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const options = document.getElementsByClassName("option");
+            for (let i = 0; i < options.length; i++) {
+                options[i].addEventListener("click", optionClickHandler);
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+    <h2>{{ single.序号 }}: {{single.题干}}</h2>
+    <h3>A: <span class="option" id="A">{{ single.A }}</span></h3>
+    <h3>B: <span class="option" id="B">{{ single.B }}</span></h3>
+    <h3>C: <span class="option" id="C">{{ single.C }}</span></h3>
+    <h3>D: <span class="option" id="D">{{ single.D }}</span></h3>
+
+    <div id="answer" data-answer="{{ single.答案 }}"></div>
+
+    <a href="{{ url_for('single', id=single.序号) }}" id="nextQuestion">下一题</a>
+
+</body>
+
+</html>

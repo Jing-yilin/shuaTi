@@ -13,7 +13,8 @@ df = pd.read_csv('./data/单选题合并.csv', encoding='utf-8', index_col=0)
 # 检查缺失值
 # print(df.isnull().sum()) # 0
 # 将所有的'答案'列去左右、中间空格
-df['答案'] = df['答案'].str.strip()
+df['答案'] = df['答案'].str.strip().replace(' ', '')
+print(df.columns)
 
 # 用for循环打印df里的题干和选项
 for i in range(len(df)):
