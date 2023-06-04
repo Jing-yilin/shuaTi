@@ -70,19 +70,10 @@
             if (selectedOption.id != correctAnswer) {
                 const nextQuestion = document.getElementById("nextQuestion");
                 // 修改nextQuestion的href链接为
-                nextQuestion.href = "{{ url_for('single',wrong=1) }}";
+                nextQuestion.href = "{{ url_for('multi',wrong=1) }}";
                 const lastQuestion = document.getElementById("lastQuestion");
                 // 修改lastQuestion的href链接为
-                lastQuestion.href = "{{ url_for('single',wrong=1,last=1) }}";
-            }
-
-            if (selectedOption.id = correctAnswer) {
-                const nextQuestion = document.getElementById("nextQuestion");
-                // 修改nextQuestion的href链接为
-                nextQuestion.href = "{{ url_for('single',wrong=0) }}";
-                const lastQuestion = document.getElementById("lastQuestion");
-                // 修改lastQuestion的href链接为
-                lastQuestion.href = "{{ url_for('single',wrong=0,last=1) }}";
+                lastQuestion.href = "{{ url_for('multi',wrong=1,last=1) }}";
             }
 
             for (let i = 0; i < options.length; i++) {
@@ -112,19 +103,19 @@
 </head>
 
 <body>
-    <h2>(单选题) {{ single.序号 }} / {{total_single}}: {{single.题干}}</h2>
-    <h3>A: <span class="option" id="A">{{ single.A }}</span></h3>
-    <h3>B: <span class="option" id="B">{{ single.B }}</span></h3>
-    <h3>C: <span class="option" id="C">{{ single.C }}</span></h3>
-    <h3>D: <span class="option" id="D">{{ single.D }}</span></h3>
+    <h2>(多选题){{ multi.序号 }} / {{total_multi}}: {{multi.题干}}</h2>
+    <h3>A: <span class="option" id="A">{{ multi.A }}</span></h3>
+    <h3>B: <span class="option" id="B">{{ multi.B }}</span></h3>
+    <h3>C: <span class="option" id="C">{{ multi.C }}</span></h3>
+    <h3>D: <span class="option" id="D">{{ multi.D }}</span></h3>
 
-    <div id="answer" data-answer="{{ single.答案 }}"></div>
+    <div id="answer" data-answer="{{ multi.答案 }}"></div>
     <div id="alreday_wrong" data-answer="{{ alreday_wrong }}"></div>
     <div id="alreday_right" data-answer="{{ alreday_right }}"></div>
 
-    <a href="{{ url_for('single',) }}" id="nextQuestion">下一题</a>
-    <a href="{{ url_for('single', last=1) }}" id="lastQuestion">上一题</a>
-    <a href="{{ url_for('single', reset=1) }}" id="reset">重置答题</a>
+    <a href="{{ url_for('multi',) }}" id="nextQuestion">下一题</a>
+    <a href="{{ url_for('multi', last=1) }}" id="lastQuestion">上一题</a>
+    <a href="{{ url_for('multi', reset=1) }}" id="reset">重置答题</a>
 
     <h3>错误数: {{count_wrong}}</h3>
     <h3>正确数: {{count_right}}</h3>
