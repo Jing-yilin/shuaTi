@@ -10,8 +10,8 @@ import json
 # import click
 
 
-def read_config():
-    with open("./config.yaml") as f:
+def read_config(username):
+    with open(f"./{username}config.yaml") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         count_right_single = config["count_right_single"]
         count_wrong_single = config["count_wrong_single"]
@@ -26,8 +26,8 @@ def read_config():
     return (count_right_single, count_wrong_single, current_single, right_id_list_single, wrong_id_list_single), (count_right_multi, count_wrong_multi, current_multi, right_id_list_multi, wrong_id_list_multi), config
 
 
-def create_config():
-    with open("./config.yaml", "w", encoding="utf-8") as f:
+def create_config(username):
+    with open(f"./{username}config.yaml", "w", encoding="utf-8") as f:
         f.write(
             "count_right_single: 0\ncount_wrong_single: 0\ncurrent_single: 0\nright_id_list_single: []\nwrong_id_list_single: []\ncount_right_multi: 0\ncount_wrong_multi: 0\ncurrent_multi: 0\nright_id_list_multi: []\nwrong_id_list_multi: []"
         )
@@ -74,22 +74,19 @@ def check_user_exist(username, password):
     return user_exist
 
 
-
+users = read_user_json()
 singles = read_single()
 multis = read_multi()
-users = read_user_json()
 
-# 如果不存在，新建空的错题本 ./data/单选错题本.txt
-if not os.path.exists("./data/单选错题本.txt"):
-    with open("./data/单选错题本.txt", "w", encoding="utf-8") as f:
-        f.write("[]")
+# 针对每个用户创建一个配置文件
+for user in users:
+    username = user['username']
+    # 如果 config.yaml 不存在，新建一个
+    if not os.path.exists(f"./{username}config.yaml"):
+        create_config(username)
 
-# 如果 config.yaml 不存在，新建一个
-if not os.path.exists("./config.yaml"):
-    create_config()
-
-(count_right_single, count_wrong_single, current_single, right_id_list_single, wrong_id_list_single), (count_right_multi,
-                                                                                                       count_wrong_multi, current_multi, right_id_list_multi, wrong_id_list_multi), config = read_config()
+# (count_right_single, count_wrong_single, current_single, right_id_list_single, wrong_id_list_single), (count_right_multi,
+#                                                                                                        count_wrong_multi, current_multi, right_id_list_multi, wrong_id_list_multi), config = read_config()
 
 
 app = Flask(__name__)
@@ -119,7 +116,7 @@ def user_check():
             resp.set_cookie('password', password)
             return resp
     if not user_exist:
-        return "<h1>用户不错在或密码错误!</h1>"
+        return "<h1>用户不存在或密码错误!</h1>"
 
 
 @app.route("/single", methods=["GET"])
@@ -149,7 +146,7 @@ def single():
     reset = request.args.get("reset")
     # 读取config.yaml
     (count_right_single, count_wrong_single, current_single,
-     right_id_list_single, wrong_id_list_single), _, config = read_config()
+     right_id_list_single, wrong_id_list_single), _, config = read_config(username)
 
     if wrong == "1":  # 错误
         print(f"选择错误，序号为{current_single}")
@@ -185,8 +182,8 @@ def single():
         right_id_list_single = []
         wrong_id_list_single = []
 
-    # 修改single_config.yaml
-    with open("./config.yaml", "w") as f:
+    # 修改{username}config.yaml
+    with open(f"./{username}config.yaml", "w") as f:
         config["count_right_single"] = count_right_single
         config["count_wrong_single"] = count_wrong_single
         config["current_single"] = current_single
@@ -230,7 +227,7 @@ def multi():
     reset = request.args.get("reset")
     # 读取config.yaml
     _, (count_right_multi, count_wrong_multi, current_multi,
-        right_id_list_multi, wrong_id_list_multi), config = read_config()
+        right_id_list_multi, wrong_id_list_multi), config = read_config(username)
 
     if wrong == "1":  # 错误
         print(f"选择错误，序号为{current_multi}")
@@ -269,7 +266,7 @@ def multi():
         wrong_id_list_multi = []
 
     # 修改config.yaml
-    with open("./config.yaml", "w") as f:
+    with open(f"./{username}config.yaml", "w") as f:
         config["count_right_multi"] = count_right_multi
         config["count_wrong_multi"] = count_wrong_multi
         config["current_multi"] = current_multi
