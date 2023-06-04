@@ -144,6 +144,8 @@
     <a href="{{ url_for('single', next=1)}}" id="nextQuestion">下一题</a>
     <a href="{{ url_for('single', last=1) }}" id="lastQuestion">上一题</a>
     <a href="{{ url_for('single', reset=1) }}" id="reset">重置答题</a>
+    <a href="{{ url_for('multi') }}">多选题</a>
+
 
     <h3>错误数: {{count_wrong}}</h3>
     <h3>正确数: {{count_right}}</h3>

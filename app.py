@@ -155,6 +155,80 @@ def single():
         total_single=len(singles),
     )
 
+@app.route("/multi", methods=["GET"])
+def multi():
+    # print(request.args)
+    wrong = request.args.get("wrong")
+    print(f"wrong: {wrong}")
+    last = (
+        request.args.get("amp;last")
+        if request.args.get("amp;last") is not None
+        else request.args.get("last")
+    )
+    print(f"last: {last}")
+    next = (
+        request.args.get("next")
+        if request.args.get("amp;next") is not None
+            else request.args.get("next")
+    )
+    reset = request.args.get("reset")
+    # 读取config.yaml
+    _, (count_right_multi, count_wrong_multi, current_multi, right_id_list_multi, wrong_id_list_multi), config = read_config()
+
+    if wrong == "1":  # 错误
+        print(f"选择错误，序号为{current_multi}")
+        if current_multi in right_id_list_multi:
+            right_id_list_multi.remove(current_multi)
+            count_right_multi -= 1
+        if current_multi not in wrong_id_list_multi:
+            wrong_id_list_multi.append(current_multi)
+            count_wrong_multi += 1
+    elif wrong == '0':  # 正确
+        print(f"选择正确，序号为{current_multi}")
+        if current_multi in wrong_id_list_multi:
+            wrong_id_list_multi.remove(current_multi)
+            count_wrong_multi -= 1
+        if current_multi not in right_id_list_multi:
+            right_id_list_multi.append(current_multi)
+            count_right_multi += 1
+    else:
+        print(f"未选择，序号为{current_multi}")
+
+    # 判断是否要回到上一题
+    if last == "1" and current_multi > 0:
+        current_multi -= 1
+    elif next == "1" and current_multi < len(multis) - 1:
+        current_multi += 1
+    else:
+        pass
+    
+    # 修改config.yaml
+    with open("./config.yaml", "w") as f:
+        config["count_right_multi"] = count_right_multi
+        config["count_wrong_multi"] = count_wrong_multi
+        config["current_multi"] = current_multi
+        config["right_id_list_multi"] = right_id_list_multi
+        config["wrong_id_list_multi"] = wrong_id_list_multi
+        yaml.dump(config, f)
+
+
+    if reset == "1":
+        print("重置")
+        create_config()
+        current_multi = 0
+        count_right_multi = 0
+        count_wrong_multi = 0
+        right_id_list_multi = []
+        wrong_id_list_multi = []
+
+    return render_template(
+        "multi.html",
+        multi=multis[current_multi],
+        count_wrong=count_wrong_multi,
+        count_right=count_right_multi,
+        total_multi=len(multis),
+    )
+
 
 
 if __name__ == "__main__":

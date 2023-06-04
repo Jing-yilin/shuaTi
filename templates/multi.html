@@ -11,6 +11,10 @@
             color: #333;
         }
 
+        .container {
+            text-align: center;
+        }
+
         h2 {
             font-size: 24px;
             font-weight: bold;
@@ -32,8 +36,23 @@
             cursor: pointer;
         }
 
-        .option:hover {
-            background-color: #eee;
+        .choice {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .selected {
+            /* background-color: #6db1de;
+            color: #fff; */
+        }
+
+        .selected_choice {
+            background-color: #6db1de;
+            color: #fff;
         }
 
         .correct {
@@ -46,84 +65,132 @@
             color: #fff;
         }
 
-        a {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
+        .check,
+a {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  margin: 5px;
+}
 
-        a:hover {
-            background-color: #0056b3;
-        }
+.check {
+  width: auto;
+}
+
+a {
+  width: fit-content;
+}
+
     </style>
     <script>
-        function checkAnswer(selectedOption) {
-            const answer = document.getElementById("answer");
-            const correctAnswer = answer.getAttribute("data-answer");
-
-            const options = document.getElementsByClassName("option");
-
-            if (selectedOption.id != correctAnswer) {
-                const nextQuestion = document.getElementById("nextQuestion");
-                // 修改nextQuestion的href链接为
-                nextQuestion.href = "{{ url_for('single',wrong=1) }}";
-                const lastQuestion = document.getElementById("lastQuestion");
-                // 修改lastQuestion的href链接为
-                lastQuestion.href = "{{ url_for('single',wrong=1,last=1) }}";
-            }else {
-                const nextQuestion = document.getElementById("nextQuestion");
-                // 修改nextQuestion的href链接为
-                nextQuestion.href = "{{ url_for('single',wrong=0) }}";
-                const lastQuestion = document.getElementById("lastQuestion");
-                // 修改lastQuestion的href链接为
-                lastQuestion.href = "{{ url_for('single',wrong=0,last=1) }}";
-            }
-
-            for (let i = 0; i < options.length; i++) {
-                options[i].removeEventListener("click", optionClickHandler);
-                if (options[i].id == correctAnswer) {
-                    options[i].classList.add("correct");
-                }
-                if (options[i].id != correctAnswer && options[i] == selectedOption) {
-                    options[i].classList.add("wrong");
-                }
-            }
-        }
-
-        function optionClickHandler(event) {
-            const selectedOption = event.target;
-            checkAnswer(selectedOption);
-        }
-
-        window.addEventListener("DOMContentLoaded", function () {
-            const options = document.getElementsByClassName("option");
+        have_wrong_flag = false;
+        const options = document.getElementsByClassName("option");
+        window.onload = function () {
             for (let i = 0; i < options.length; i++) {
                 options[i].addEventListener("click", optionClickHandler);
             }
-        });
+        };
+
+
+        // 获得四个choice
+        const choices = document.getElementsByClassName("choice");
+
+        function optionClickHandler(event) {
+            let selectedIndex = -1;
+
+            for (let i = 0; i < options.length; i++) {
+                if (options[i] === event.target) {
+                    selectedIndex = i;
+                    break;
+                }
+            }
+            if (event.target.classList.contains("selected")) {
+                event.target.classList.remove("selected");
+                choices[selectedIndex].classList.remove("selected_choice");
+            }
+            else {
+                event.target.classList.add("selected");
+                choices[selectedIndex].classList.add("selected_choice");
+            }
+        }
+
+        function optionCheckHandler(event) {
+            console.log("optionCheckHandler执行");
+            let correctAnswer = answer.getAttribute("data-answer");
+            //把correctAnswer分割为数组
+            correctAnswer = correctAnswer.split("");
+            console.log("正确答案 = " + correctAnswer)
+            // 遍历四个选项，如果选项被选择了，那么选项的id就加入到myAnswer后面
+            const options = document.getElementsByClassName("option");
+            for (let i = 0; i < options.length; i++) {
+                console.log('options[i].id = ' + options[i].id)
+                if (correctAnswer.indexOf(options[i].id) > -1 & options[i].classList.contains("selected")) {
+                    console.log("选项" + options[i].id + "正确");
+                    options[i].classList.add("correct");
+                }
+                else if (correctAnswer.indexOf(options[i].id) > -1 & !options[i].classList.contains("selected")) {
+                    console.log("选项" + options[i].id + "正确，但是没有被选中");
+                    options[i].classList.add("wrong");
+                    have_wrong_flag = true;
+                } else {
+                    console.log("选项" + options[i].id + "错误");
+                }
+            }
+
+            if (have_wrong_flag) {
+                const nextQuestion = document.getElementById("nextQuestion");
+                // 修改nextQuestion的href链接为
+                nextQuestion.href = "{{ url_for('multi',wrong=1, next=1) }}";
+                const lastQuestion = document.getElementById("lastQuestion");
+                // 修改lastQuestion的href链接为
+                lastQuestion.href = "{{ url_for('multi',wrong=1,last=1) }}";
+            }else {
+                const nextQuestion = document.getElementById("nextQuestion");
+                // 修改nextQuestion的href链接为
+                nextQuestion.href = "{{ url_for('multi',wrong=0, next=1) }}";
+                const lastQuestion = document.getElementById("lastQuestion");
+                // 修改lastQuestion的href链接为
+                lastQuestion.href = "{{ url_for('multi',wrong=0,last=1) }}";
+            }
+        };
+
     </script>
 
 </head>
 
 <body>
-    <h2>(单选题) {{ single.序号 }} / {{total_single}}: {{single.题干}}</h2>
-    <h3>A: <span class="option" id="A">{{ single.A }}</span></h3>
-    <h3>B: <span class="option" id="B">{{ single.B }}</span></h3>
-    <h3>C: <span class="option" id="C">{{ single.C }}</span></h3>
-    <h3>D: <span class="option" id="D">{{ single.D }}</span></h3>
+    <div class="container">
+        <h2>(多选题) {{ multi.序号 }} / {{total_multi}}: {{multi.题干}}</h2>
+        <h3>
+            <div class="choice">A</div>: <div class="option" id="A">{{ multi.A }}</div>
+        </h3>
+        <h3>
+            <div class="choice">B</div>: <div class="option" id="B">{{ multi.B }}</div>
+        </h3>
+        <h3>
+            <div class="choice">C</div>: <div class="option" id="C">{{ multi.C }}</div>
+        </h3>
+        <h3>
+            <div class="choice">D</div>: <div class="option" id="D">{{ multi.D }}</div>
+        </h3>
+    </div>
 
-    <div id="answer" data-answer="{{ single.答案 }}"></div>
+    <div id="answer" data-answer="{{ multi.答案 }}"></div>
 
-    <a href="{{ url_for('single',) }}" id="nextQuestion">下一题</a>
-    <a href="{{ url_for('single', last=1) }}" id="lastQuestion">上一题</a>
-    <a href="{{ url_for('single', reset=1) }}" id="reset">重置答题</a>
+    <button class="check" onclick="optionCheckHandler()">确认</button>
 
-    <h3>错误数: {{count_wrong}}</h3>
-    <h3>正确数: {{count_right}}</h3>
+    <a href="{{ url_for('multi', next=1) }}" id="nextQuestion">下一题</a>
+    <a href="{{ url_for('multi', last=1) }}" id="lastQuestion">上一题</a>
+    <a href="{{ url_for('multi', reset=1) }}" id="reset">重置答题</a>
+    <a href="{{ url_for('single') }}">单选题</a>
+
+    <div>
+        <h3>错误数: {{count_wrong}}</h3>
+        <h3>正确数: {{count_right}}</h3>
+    </div>
 
 </body>
 
