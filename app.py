@@ -93,7 +93,7 @@ def single():
     )
     print(f"last: {last}")
     next = (
-        request.args.get("next")
+        request.args.get("amp;next")
         if request.args.get("amp;next") is not None
             else request.args.get("next")
     )
@@ -127,6 +127,13 @@ def single():
         current_single += 1
     else:
         pass
+
+    if reset == "1":
+        current_single = 0
+        count_right_single = 0
+        count_wrong_single = 0
+        right_id_list_single = []
+        wrong_id_list_single = []
     
     # 修改single_config.yaml
     with open("./config.yaml", "w") as f:
@@ -137,15 +144,6 @@ def single():
         config["wrong_id_list_single"] = wrong_id_list_single
         yaml.dump(config, f)
 
-
-    if reset == "1":
-        print("重置")
-        create_config()
-        current_single = 0
-        count_right_single = 0
-        count_wrong_single = 0
-        right_id_list_single = []
-        wrong_id_list_single = []
 
     return render_template(
         "single.html",
@@ -167,7 +165,7 @@ def multi():
     )
     print(f"last: {last}")
     next = (
-        request.args.get("next")
+        request.args.get("amp;next")
         if request.args.get("amp;next") is not None
             else request.args.get("next")
     )
@@ -196,11 +194,20 @@ def multi():
 
     # 判断是否要回到上一题
     if last == "1" and current_multi > 0:
+        print("curren_multi-1, 上一题")
         current_multi -= 1
     elif next == "1" and current_multi < len(multis) - 1:
+        print("curren_multi+1, 下一题")
         current_multi += 1
     else:
         pass
+
+    if reset == "1":
+        current_multi = 0
+        count_right_multi = 0
+        count_wrong_multi = 0
+        right_id_list_multi = []
+        wrong_id_list_multi = []
     
     # 修改config.yaml
     with open("./config.yaml", "w") as f:
@@ -210,16 +217,6 @@ def multi():
         config["right_id_list_multi"] = right_id_list_multi
         config["wrong_id_list_multi"] = wrong_id_list_multi
         yaml.dump(config, f)
-
-
-    if reset == "1":
-        print("重置")
-        create_config()
-        current_multi = 0
-        count_right_multi = 0
-        count_wrong_multi = 0
-        right_id_list_multi = []
-        wrong_id_list_multi = []
 
     return render_template(
         "multi.html",

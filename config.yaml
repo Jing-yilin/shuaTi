@@ -1,12 +1,13 @@
 count_right_multi: 0
 count_right_single: 0
-count_wrong_multi: 2
+count_wrong_multi: 3
 count_wrong_single: 0
-current_multi: 18
+current_multi: 3
 current_single: 0
 right_id_list_multi: []
 right_id_list_single: []
 wrong_id_list_multi:
-- 19
-- 18
+- 0
+- 1
+- 2
 wrong_id_list_single: []

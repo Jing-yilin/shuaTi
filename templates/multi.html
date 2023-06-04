@@ -9,21 +9,35 @@
             background-color: #f4f4f4;
             font-family: 'Helvetica Neue', Arial, sans-serif;
             color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
         }
 
         .container {
-            text-align: center;
+            margin-top: 50px;
         }
 
         h2 {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 10px;
+            word-wrap: break-word;
         }
 
         h3 {
             font-size: 18px;
             margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+
+        .choice {
+            display:inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color:#fff;
+            margin:5px;
+            cursor:pointer;
         }
 
         .option {
@@ -34,24 +48,22 @@
             background-color: #fff;
             margin: 5px;
             cursor: pointer;
+            white-space: normal;
+            word-wrap: break-word;
+            width: 80%;
         }
 
-        .choice {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #fff;
-            margin: 5px;
-            cursor: pointer;
-        }
+        /* .option:hover {
+            background-color: #e9e9e9;
+        } */
 
         .selected {
-            /* background-color: #6db1de;
+            /* background-color: #007bff;
             color: #fff; */
         }
 
         .selected_choice {
-            background-color: #6db1de;
+            background-color: #007bff;
             color: #fff;
         }
 
@@ -65,24 +77,44 @@
             color: #fff;
         }
 
-        .check,
-a {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  margin: 5px;
-}
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
 
-.check {
-  width: auto;
-}
+        /* a:hover {
+            background-color: #0056b3;
+        } */
 
-a {
-  width: fit-content;
-}
+        .result {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            h3 {
+                font-size: 16px;
+                padding: 5px;
+            }
+
+            .option {
+                padding: 8px 16px;
+            }
+
+            a {
+                padding: 8px 16px;
+            }
+        }
 
     </style>
     <script>
@@ -147,7 +179,7 @@ a {
                 const lastQuestion = document.getElementById("lastQuestion");
                 // 修改lastQuestion的href链接为
                 lastQuestion.href = "{{ url_for('multi',wrong=1,last=1) }}";
-            }else {
+            } else {
                 const nextQuestion = document.getElementById("nextQuestion");
                 // 修改nextQuestion的href链接为
                 nextQuestion.href = "{{ url_for('multi',wrong=0, next=1) }}";
@@ -180,7 +212,7 @@ a {
 
     <div id="answer" data-answer="{{ multi.答案 }}"></div>
 
-    <button class="check" onclick="optionCheckHandler()">确认</button>
+    <a class="check" onclick="optionCheckHandler()">确认</a>
 
     <a href="{{ url_for('multi', next=1) }}" id="nextQuestion">下一题</a>
     <a href="{{ url_for('multi', last=1) }}" id="lastQuestion">上一题</a>
