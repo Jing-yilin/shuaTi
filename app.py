@@ -35,7 +35,7 @@ def create_config(username):
 
 def read_single():
     # 读取单选题
-    singles = pd.read_csv("./data/单选题合并.csv", encoding="utf-8", index_col=0)
+    singles = pd.read_csv("./data/maogai/单选题合并.csv", encoding="utf-8", index_col=0)
     singles["答案"] = singles["答案"].str.strip().replace(
         " ", "")  # 将所有的'答案'列去左右、中间空格
     # df的加上一个序号列
@@ -48,7 +48,7 @@ def read_single():
 
 def read_multi():
     # 读取多选题
-    multis = pd.read_csv("./data/多选题合并.csv", encoding="utf-8", index_col=0)
+    multis = pd.read_csv("./data/maogai/多选题合并.csv", encoding="utf-8", index_col=0)
     multis["答案"] = multis["答案"].str.strip().replace(
         " ", "")  # 将所有的'答案'列去左右、中间空格
     multis.insert(0, "序号", range(1, len(multis) + 1))
