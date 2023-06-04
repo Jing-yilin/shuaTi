@@ -32,9 +32,9 @@
             cursor: pointer;
         }
 
-        .option:hover {
+        /* .option:hover {
             background-color: #eee;
-        }
+        } */
 
         .correct {
             background-color: #5cb85c;
@@ -56,9 +56,9 @@
             transition: background-color 0.3s ease;
         }
 
-        a:hover {
+        /* a:hover {
             background-color: #0056b3;
-        }
+        } */
     </style>
     <script>
         function checkAnswer(selectedOption) {
@@ -74,9 +74,7 @@
                 const lastQuestion = document.getElementById("lastQuestion");
                 // 修改lastQuestion的href链接为
                 lastQuestion.href = "{{ url_for('single',wrong=1,last=1) }}";
-            }
-
-            if (selectedOption.id = correctAnswer) {
+            }else {
                 const nextQuestion = document.getElementById("nextQuestion");
                 // 修改nextQuestion的href链接为
                 nextQuestion.href = "{{ url_for('single',wrong=0) }}";
@@ -119,8 +117,6 @@
     <h3>D: <span class="option" id="D">{{ single.D }}</span></h3>
 
     <div id="answer" data-answer="{{ single.答案 }}"></div>
-    <div id="alreday_wrong" data-answer="{{ alreday_wrong }}"></div>
-    <div id="alreday_right" data-answer="{{ alreday_right }}"></div>
 
     <a href="{{ url_for('single',) }}" id="nextQuestion">下一题</a>
     <a href="{{ url_for('single', last=1) }}" id="lastQuestion">上一题</a>
