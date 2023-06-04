@@ -92,6 +92,11 @@ def single():
         else request.args.get("last")
     )
     print(f"last: {last}")
+    next = (
+        request.args.get("next")
+        if request.args.get("amp;next") is not None
+            else request.args.get("next")
+    )
     reset = request.args.get("reset")
     # 读取config.yaml
     (count_right_single, count_wrong_single, current_single, right_id_list_single, wrong_id_list_single), _, config = read_config()
@@ -118,9 +123,10 @@ def single():
     # 判断是否要回到上一题
     if last == "1" and current_single > 0:
         current_single -= 1
-    else:
+    elif next == "1":
         current_single += 1
-
+    else:
+        pass
     
     # 修改single_config.yaml
     with open("./config.yaml", "w") as f:
