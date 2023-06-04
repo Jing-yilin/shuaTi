@@ -9,8 +9,15 @@
         have_wrong_flag = false;
         const options = document.getElementsByClassName("option");
         window.onload = function () {
+            total_word = 0
             for (let i = 0; i < options.length; i++) {
                 options[i].addEventListener("click", optionClickHandler);
+                total_word += options[i].innerText.length
+            }
+            if (total_word > 90) {
+                for (let i = 0; i < options.length; i++) {
+                    options[i].style.fontSize = "3vw";
+                }
             }
         };
 
@@ -102,8 +109,7 @@
     <div id="answer" data-answer="{{ multi.答案 }}"></div>
 
     <div id="btn">
-        <a class="check" onclick="optionCheckHandler()">确认</a>
-
+        <a class="check" onclick="optionCheckHandler()" id="sure">确认</a>
         <a href="{{ url_for('multi', next=1) }}" id="nextQuestion">下一题</a>
         <a href="{{ url_for('multi', last=1) }}" id="lastQuestion">上一题</a>
         <a href="{{ url_for('multi', reset=1) }}" id="reset">重置答题</a>

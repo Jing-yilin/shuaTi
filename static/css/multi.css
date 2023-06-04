@@ -44,11 +44,11 @@ h3 {
     border-radius: 10px;
     border: 2px solid #ccc;
     background-color: #fff;
-    margin: 5px;
+    /* margin: 5px; */
     cursor: pointer;
     white-space: normal; /* 允许文字换行 */
     word-wrap: break-word;
-    width: 80%; /* 设置宽度为百分比 */
+    width: 70vw; /* 设置宽度为百分比 */
     /* height: 8vh; */
 
 }
@@ -81,7 +81,7 @@ h3 {
     /* padding: 4vw; */
     left: auto;
     right: auto;
-    bottom: 25vh;
+    bottom: 14vh;
     padding-left: auto;
     padding-right: auto;
     /* padding-bottom: 40vh; */
@@ -97,10 +97,23 @@ a {
     background-color: #007bff;
     color: #fff;
     text-decoration: none;
-    /* transition: background-color 0.3s ease; */
+    transition: background-color 0.3s ease;
     font-size: 4vw;
     margin-left: 1vw;
     margin-right: 1vw;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    width: 19vw;
+}
+
+
+#sure, #nextQuestion {
+    display:block;
+    width: 70vw;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* a:hover {
