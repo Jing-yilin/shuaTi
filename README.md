@@ -16,7 +16,7 @@ python3 ./app.py
 
 # 如何detach screen
 ```bash
-screen ls # 例如显示为 123456.shuaTi
+screen -ls # 例如显示为 123456.shuaTi
 screen -d 123456.shuaTi
 
 ```

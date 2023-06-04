@@ -1,0 +1,28 @@
+<!-- 用户登录界面 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+
+<body>
+    <div class="container">
+        <form action="/usercheck">
+            <h2>用户登录</h2>
+            <div class="input-group">
+                <label for="username">用户名:</label>
+                <input type="text" name="username" id="username">
+            </div>
+            <div class="input-group">
+                <label for="password">密码:</label>
+                <input type="password" name="password" id="password">
+            </div>
+            <input type="submit" value="登录">
+        </form>
+    </div>
+</body>
+
+</html>
