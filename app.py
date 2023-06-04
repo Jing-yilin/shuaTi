@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response,redirect, url_for
 
 # from markupsafe import escape
 import pandas as pd
@@ -62,6 +62,18 @@ def read_user_json():
         print(users)
     return users
 
+def check_user_exist(username, password):
+    if username is None or password is None:
+        return False
+    user_exist = False
+    users = read_user_json()
+    for item in users:
+        if username == item["username"] and password == item["password"]:
+            user_exist = True
+            break
+    return user_exist
+
+
 
 singles = read_single()
 multis = read_multi()
@@ -82,8 +94,12 @@ if not os.path.exists("./config.yaml"):
 
 app = Flask(__name__)
 
-
 @app.route("/")
+def index():
+    return render_template("login.html")
+
+
+@app.route("/login")
 def login():
     return render_template("login.html")
 
@@ -97,18 +113,25 @@ def user_check():
     for item in users:
         if username == item["username"] and password == item["password"]:
             user_exist = True
-            # 返回题目页面
-            return render_template("single.html",
-                                   single=singles[current_single],
-                                   count_wrong=count_wrong_single,
-                                   count_right=count_right_single,
-                                   total_single=len(singles),)
+            resp = make_response(redirect(url_for("single")))
+            # 设置cookie
+            resp.set_cookie('username', username)
+            resp.set_cookie('password', password)
+            return resp
     if not user_exist:
         return "<h1>用户不错在或密码错误!</h1>"
 
 
 @app.route("/single", methods=["GET"])
 def single():
+    # 读取cookie进行校验
+    cookies = request.cookies
+    username = cookies.get('username')
+    password = cookies.get('password')
+    if not check_user_exist(cookies['username'], cookies['password']):
+        print("未检测到cookie，用户未登录过")
+        resp = make_response(redirect(url_for("login")))
+        return resp
     # print(request.args)
     wrong = request.args.get("wrong")
     print(f"wrong: {wrong}")
@@ -182,6 +205,14 @@ def single():
 
 @app.route("/multi", methods=["GET"])
 def multi():
+    # 读取cookie进行校验
+    cookies = request.cookies
+    username = cookies.get('username')
+    password = cookies.get('password')
+    if not check_user_exist(cookies['username'], cookies['password']):
+        print("未检测到cookie，用户未登录过")
+        resp = make_response(redirect(url_for("login")))
+        return resp
     # print(request.args)
     wrong = request.args.get("wrong")
     print(f"wrong: {wrong}")
