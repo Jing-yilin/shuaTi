@@ -1,0 +1,102 @@
+body {
+    background-color: #f4f4f4;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    margin: 1vh;
+    padding: 0;
+    text-align: center;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+h2 {
+    font-size: 4vw;
+    /* font-weight: bold; */
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+
+.title {
+    /* height: auto; */
+    max-height: 35vh;
+}
+
+h3 {
+    font-size: 4vw;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.option {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    margin: 5px;
+    cursor: pointer;
+    white-space: normal; /* 允许文字换行 */
+    word-wrap: break-word;
+    width: 80%; /* 设置宽度为百分比 */
+    /* height: 8vh; */
+
+}
+
+.correct {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.wrong {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+#btn {
+    position: fixed;
+    /* padding: 4vw; */
+    left: auto;
+    right: auto;
+    bottom: 25vh;
+    padding-left: auto;
+    padding-right: auto;
+    /* padding-bottom: 40vh; */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100vw;
+}
+
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 4vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+@media (max-width: 600px) {
+    h2 {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    h3 {
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    .option {
+        padding: 8px 16px;
+    }
+
+    a {
+        padding: 8px 16px;
+    }
+}

@@ -21,17 +21,18 @@ body {
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 6vw;
     margin-bottom: 20px;
 }
 
 .input-group {
+    width: 80vw;
     margin-bottom: 20px;
 }
 
 label {
     display: block;
-    font-size: 14px;
+    font-size: 4vw;
     font-weight: bold;
     margin-bottom: 5px;
 }
@@ -41,7 +42,9 @@ input[type="password"] {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    width: 300px;
+    width: 80vw;
+    height: 5vh;
+    font-size: 4vw;
 }
 
 input[type="submit"] {
@@ -49,10 +52,12 @@ input[type="submit"] {
     border-radius: 5px;
     background-color: #333;
     color: #fff;
-    font-size: 16px;
+    font-size: 4vw;
     text-decoration: none;
     transition: background-color 0.3s ease;
     cursor: pointer;
+    width: 80vw;
+    height: 6vh;
 }
 
 input[type="submit"]:hover {

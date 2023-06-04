@@ -20,3 +20,8 @@ screen -ls # 例如显示为 123456.shuaTi
 screen -d 123456.shuaTi
 
 ```
+
+# 如何退出进程
+```bash
+screen -X -S 123456.shuaTi quit
+```

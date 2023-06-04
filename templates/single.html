@@ -4,89 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>毛概刷题~给濛濛</title>
-    <style>
-        body {
-            background-color: #f4f4f4;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+    <link rel="stylesheet" href="/static/css/single.css">
 
-        .container {
-            margin-top: 50px;
-        }
-
-        h2 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            word-wrap: break-word;
-        }
-
-        h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-            word-wrap: break-word;
-        }
-
-        .option {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: 2px solid #ccc;
-            background-color: #fff;
-            margin: 5px;
-            cursor: pointer;
-            white-space: normal; /* 允许文字换行 */
-            word-wrap: break-word;
-            width: 80%; /* 设置宽度为百分比 */
-            height: 15%;
-            margin-left: auto; /* 居中显示 */
-            margin-right: auto; /* 居中显示 */
-        }
-
-        .correct {
-            background-color: #5cb85c;
-            color: #fff;
-        }
-
-        .wrong {
-            background-color: #d9534f;
-            color: #fff;
-        }
-
-        a {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        @media (max-width: 600px) {
-            h2 {
-                font-size: 20px;
-                padding: 10px;
-            }
-
-            h3 {
-                font-size: 16px;
-                padding: 5px;
-            }
-
-            .option {
-                padding: 8px 16px;
-            }
-
-            a {
-                padding: 8px 16px;
-            }
-        }
-    </style>
     <script>
         function checkAnswer(selectedOption) {
             const answer = document.getElementById("answer");
@@ -127,9 +46,16 @@
         }
 
         window.addEventListener("DOMContentLoaded", function () {
+            total_word = 0
             const options = document.getElementsByClassName("option");
             for (let i = 0; i < options.length; i++) {
                 options[i].addEventListener("click", optionClickHandler);
+                total_word += options[i].innerText.length
+            }
+            if (total_word > 120) {
+                for (let i = 0; i < options.length; i++) {
+                    options[i].style.fontSize = "3vw";
+                }
             }
         });
     </script>
@@ -137,23 +63,28 @@
 </head>
 
 <body>
-    <h2>(单选题) {{ single.序号 }} / {{total_single}}: {{single.题干}}</h2>
+    <h2>(单选题) {{ single.序号 }} / {{total_single}}</h2>
+    <h2 class="title">{{single.题干}}</h2>
     <h3>A: <span class="option" id="A">{{ single.A }}</span></h3>
     <h3>B: <span class="option" id="B">{{ single.B }}</span></h3>
     <h3>C: <span class="option" id="C">{{ single.C }}</span></h3>
     <h3>D: <span class="option" id="D">{{ single.D }}</span></h3>
 
     <div id="answer" data-answer="{{ single.答案 }}"></div>
+    <div id="btn">
 
     <a href="{{ url_for('single', next=1)}}" id="nextQuestion">下一题</a>
     <a href="{{ url_for('single', last=1) }}" id="lastQuestion">上一题</a>
     <a href="{{ url_for('single', reset=1) }}" id="reset">重置答题</a>
     <a href="{{ url_for('multi') }}">多选题</a>
 
-
     <h3>错误数: {{count_wrong}}</h3>
     <h3>正确数: {{count_right}}</h3>
 
+    </div>
+
+    
+ 
 </body>
 
 </html>
