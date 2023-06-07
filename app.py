@@ -6,12 +6,14 @@ import os
 import yaml
 import json
 
-# from flask_sqlalchemy import SQLAlchemy
-# import click
+from flask_sqlalchemy import SQLAlchemy
+import pymysql 
+pymysql.install_as_MySQLdb()
 
+user_config_path = './userconfig/'
 
 def read_config(username):
-    with open(f"./{username}config.yaml") as f:
+    with open(f"{user_config_path}{username}config.yaml") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         count_right_single = config["count_right_single"]
         count_wrong_single = config["count_wrong_single"]
@@ -27,7 +29,7 @@ def read_config(username):
 
 
 def create_config(username):
-    with open(f"./{username}config.yaml", "w", encoding="utf-8") as f:
+    with open(f"{user_config_path}{username}config.yaml", "w", encoding="utf-8") as f:
         f.write(
             "count_right_single: 0\ncount_wrong_single: 0\ncurrent_single: 0\nright_id_list_single: []\nwrong_id_list_single: []\ncount_right_multi: 0\ncount_wrong_multi: 0\ncurrent_multi: 0\nright_id_list_multi: []\nwrong_id_list_multi: []"
         )
@@ -59,7 +61,7 @@ def read_multi():
 def read_user_json():
     with open("./user.json", "r", encoding="utf-8") as f:
         users = json.load(f)
-        print(users)
+        # print(users)
     return users
 
 def check_user_exist(username, password):
@@ -90,6 +92,56 @@ for user in users:
 
 
 app = Flask(__name__)
+
+# # TODO: 不再使用用户配置文件yaml，而是使用数据库,数据库中有2张表single和multi，每张表中都有id, question, a, b, c, d answer
+# # 连接mysql数据库
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:jingyl@localhost:3306/maogai'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(app)
+
+# # 创建数据库模型
+# class Single(db.Model):
+#     __tablename__ = 'single'
+#     id = db.Column(db.Integer, primary_key=True)
+#     question = db.Column(db.String(1024), nullable=False)
+#     a = db.Column(db.String(512), nullable=False)
+#     b = db.Column(db.String(512), nullable=False)
+#     c = db.Column(db.String(512), nullable=False)
+#     d = db.Column(db.String(512), nullable=False)
+#     answer = db.Column(db.String(1), nullable=False)
+
+#     def __repr__(self):
+#         return '<Single %r>' % self.question
+    
+# class Multi(db.Model):
+#     __tablename__ = 'multi'
+#     id = db.Column(db.Integer, primary_key=True)
+#     question = db.Column(db.String(1024), nullable=False)
+#     a = db.Column(db.String(512), nullable=False)
+#     b = db.Column(db.String(512), nullable=False)
+#     c = db.Column(db.String(512), nullable=False)
+#     d = db.Column(db.String(512), nullable=False)
+#     answer = db.Column(db.String(8), nullable=False)
+
+#     def __repr__(self):
+#         return '<Multi %r>' % self.question
+    
+# class User(db.Model):
+#     __tablename__ = 'user'
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(128), nullable=False)
+#     password = db.Column(db.String(128), nullable=False)
+#     current_single = db.Column(db.Integer, nullable=False)
+#     current_multi = db.Column(db.Integer, nullable=False)
+
+#     def __repr__(self):
+#         return '<User %r>' % self.question
+
+# # 读取数据库中的single表的id=1的数据
+# single = Single.query.filter_by(id=1).first()
+# print(single.question)
+
+
 
 @app.route("/")
 def index():
@@ -284,4 +336,4 @@ def multi():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5001)
